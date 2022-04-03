@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hello WebSocket</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.2/sockjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+</head>
+<body>
+
+<script>
+
+    window.addEventListener('load', (e) => {
+        const socket = new SockJS('/chat')
+        const stompClient = Stomp.over(socket)
+        //headers = {login: 'asd', passcode: '2323', 'client-id':'my-id'}
+        //connect accepts connectCallBack(frame), errorCallback(frame)
+        //closeEventCallback(CloseEvent)
+        //This one has no credentials and a connectcallback only.
+        stompClient.connect({}, (frame) => {
+
+            stompClient.subscribe('/topic/errors', (greeting) => {
+                console.warn('errors: ' + greeting.body)
+            });
+            
+            //Need to save it to a variable to later .unsubscribe()
+            //subscribe(destination, callback, ((id)))
+            //Its secound attribute is what happens on message
+            var callback = function(message){
+                console.log('greetings: ' + message.body)
+            };
+            var sub = stompClient.subscribe('/topic/greetings', callback);
+            
+            //destination, ((JSObject headers)), ((String body))
+            //these ones has a empty object sent {}
+            stompClient.send('/app/chat', {}, JSON.stringify({name: 'Tammie'}))
+            stompClient.send('/app/chat', {}, JSON.stringify({name: 'josh'}))
+        });
+        //can also client.disconnect
+        //can client.reconnect_delay
+    })
+</script>
+</body>
+</html>
