@@ -6,7 +6,7 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 
 public class ServletInitializer extends SpringBootServletInitializer {
 
-
+//test
 	
 	@Override
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
