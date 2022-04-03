@@ -10,7 +10,7 @@ public class ServletInitializer extends SpringBootServletInitializer {
 	
 	@Override
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-		
+		//start
 		return application.sources(SpringpollApplication.class);
 	}
 
