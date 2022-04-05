@@ -1,4 +1,4 @@
-package arpa.home.springpoll.alternative;
+package arpa.home.springpoll.data;
 
 import java.math.BigInteger;
 

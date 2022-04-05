@@ -1,4 +1,4 @@
-package arpa.home.springpoll.voteSocket;
+package arpa.home.springpoll.dev.proto.votesocket;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

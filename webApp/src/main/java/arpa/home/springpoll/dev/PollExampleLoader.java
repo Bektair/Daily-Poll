@@ -1,4 +1,4 @@
-package arpa.home.springpoll.poll;
+package arpa.home.springpoll.dev;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -17,13 +17,14 @@ import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.stereotype.Component;
 
-import arpa.home.springpoll.alternative.AltService;
-import arpa.home.springpoll.alternative.AlternativeRepository;
+import arpa.home.springpoll.data.AlternativeRepository;
+import arpa.home.springpoll.data.PollRepository;
+import arpa.home.springpoll.data.QuestionRepository;
 import arpa.home.springpoll.entities.Alternative;
 import arpa.home.springpoll.entities.Poll;
 import arpa.home.springpoll.entities.Question;
-import arpa.home.springpoll.question.QuestService;
-import arpa.home.springpoll.question.QuestionRepository;
+import arpa.home.springpoll.usecase.AltService;
+import arpa.home.springpoll.usecase.QuestService;
 
 @Profile("dev")
 @Component

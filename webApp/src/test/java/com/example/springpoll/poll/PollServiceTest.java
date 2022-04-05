@@ -23,11 +23,11 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import arpa.home.springpoll.data.PollRepository;
 import arpa.home.springpoll.entities.Alternative;
 import arpa.home.springpoll.entities.Poll;
 import arpa.home.springpoll.entities.Question;
-import arpa.home.springpoll.poll.PollRepository;
-import arpa.home.springpoll.poll.PollService;
+import arpa.home.springpoll.usecase.PollService;
 
 import org.mockito.BDDMockito.*;
 

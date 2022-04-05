@@ -1,4 +1,4 @@
-package arpa.home.springpoll.resourcelibrary;
+package arpa.home.springpoll.dev.proto.resourcelib;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -7,6 +7,7 @@ import java.util.Enumeration;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import javax.servlet.MultipartConfigElement;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.MultipartConfig;
@@ -15,8 +16,25 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
+import org.springframework.boot.web.servlet.ServletRegistrationBean;
+import org.springframework.context.annotation.Bean;
+
+import arpa.home.springpoll.uploadReplayServlet;
 
 
+/*
+ * Servlet Prototype, requires to be registered as servlet
+ * 	@Bean
+	public ServletRegistrationBean exampleServletBean() {
+	    ServletRegistrationBean bean = new ServletRegistrationBean(
+	      new uploadReplayServlet(), "/lib/upload");
+	    bean.setLoadOnStartup(1);
+	    
+	    bean.setMultipartConfig(new MultipartConfigElement
+	    		("/tmp", 20971520L,41943040L, 52428080)); 
+	    return bean;
+	}
+ */
 public class uploadReplayServlet extends HttpServlet {
 	
 	private volatile int TICKET_ID_SEQUENCE = 1;

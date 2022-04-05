@@ -26,9 +26,8 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 
 import com.sun.security.auth.module.Krb5LoginModule;
 
-import arpa.home.springpoll.pgdatasource.PGDataSourceConfigDev;
-import arpa.home.springpoll.pgdatasource.PGDataSourceFactoryImpLocalhost;
-import arpa.home.springpoll.poll.PollExampleLoader;
+import arpa.home.springpoll.data.dataSource.PGDataSourceConfigDev;
+import arpa.home.springpoll.data.dataSource.PGDataSourceFactoryImpLocalhost;
 
 //scans for components and autoconfigures ++
 @SpringBootApplication

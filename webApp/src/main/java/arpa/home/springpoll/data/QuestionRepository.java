@@ -1,4 +1,4 @@
-package arpa.home.springpoll.question;
+package arpa.home.springpoll.data;
 
 import java.math.BigInteger;
 import java.time.LocalDate;

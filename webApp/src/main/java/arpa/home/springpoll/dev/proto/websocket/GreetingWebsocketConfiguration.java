@@ -1,4 +1,4 @@
-package arpa.home.springpoll.websocket;
+package arpa.home.springpoll.dev.proto.websocket;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;

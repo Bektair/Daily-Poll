@@ -1,4 +1,4 @@
-package arpa.home.springpoll.question;
+package arpa.home.springpoll.usecase;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -9,8 +9,8 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import arpa.home.springpoll.alternative.AltService;
-import arpa.home.springpoll.alternative.AlternativeRepository;
+import arpa.home.springpoll.data.AlternativeRepository;
+import arpa.home.springpoll.data.QuestionRepository;
 import arpa.home.springpoll.entities.Alternative;
 import arpa.home.springpoll.entities.Poll;
 import arpa.home.springpoll.entities.Question;

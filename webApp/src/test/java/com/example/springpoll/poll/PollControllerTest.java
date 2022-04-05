@@ -42,10 +42,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import arpa.home.springpoll.businessRule.dateFormat;
+import arpa.home.springpoll.WebMvcConfig;
 import arpa.home.springpoll.entities.Poll;
-import arpa.home.springpoll.poll.PollController;
-import arpa.home.springpoll.poll.PollService;
+import arpa.home.springpoll.presentation.PollController;
+import arpa.home.springpoll.usecase.PollService;
 
 @WebMvcTest(PollController.class) //limited to web layer and class
 class PollControllerTest {
@@ -79,7 +79,7 @@ class PollControllerTest {
 		  		MediaType.APPLICATION_JSON))
 		  .andExpect(jsonPath("$[*].datePosted")
 		  		.value(datePosted
-		  				.format(dateFormat.retrieveDateFormat())))
+		  				.format(WebMvcConfig.retrieveDateFormat())))
 			.andExpect(jsonPath("$[*].pollId")
 				.value(poll.getPollId().intValue()));
 	}
@@ -125,7 +125,7 @@ class PollControllerTest {
 		BigInteger pollId = BigInteger.ONE;
 		String postedDateParam = "11/11/2000";
 		LocalDate postedDate = LocalDate.parse(postedDateParam, 
-				dateFormat.retrieveDateFormat());
+				WebMvcConfig.retrieveDateFormat());
 		
 		//act
 		MvcResult result = mockMvc.perform(put("/api/v1/poll/"+pollId.intValue())

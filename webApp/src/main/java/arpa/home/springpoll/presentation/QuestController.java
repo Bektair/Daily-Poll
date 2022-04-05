@@ -1,4 +1,4 @@
-package arpa.home.springpoll.question;
+package arpa.home.springpoll.presentation;
 
 import java.util.List;
 
@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import arpa.home.springpoll.entities.Question;
+import arpa.home.springpoll.usecase.QuestService;
 
 @RestController
 @RequestMapping(path = "api/v1/quest")

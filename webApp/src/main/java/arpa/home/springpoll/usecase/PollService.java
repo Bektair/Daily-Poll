@@ -1,4 +1,4 @@
-package arpa.home.springpoll.poll;
+package arpa.home.springpoll.usecase;
 
 
 import java.math.BigInteger;
@@ -11,6 +11,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import arpa.home.springpoll.data.PollRepository;
 import arpa.home.springpoll.entities.Poll;
 
 //Service is business logic

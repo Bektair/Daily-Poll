@@ -1,4 +1,4 @@
-package arpa.home.springpoll.websocket;
+package arpa.home.springpoll.dev.proto.websocket;
 
 import org.springframework.core.NestedExceptionUtils;
 import org.springframework.messaging.handler.annotation.MessageExceptionHandler;
