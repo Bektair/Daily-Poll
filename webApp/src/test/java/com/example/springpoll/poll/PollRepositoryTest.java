@@ -10,9 +10,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-import com.example.springpoll.entities.Alternative;
-import com.example.springpoll.entities.Poll;
-import com.example.springpoll.entities.Question;
+import arpa.home.springpoll.entities.Alternative;
+import arpa.home.springpoll.entities.Poll;
+import arpa.home.springpoll.entities.Question;
+import arpa.home.springpoll.poll.PollRepository;
 
 @DataJpaTest
 public class PollRepositoryTest {

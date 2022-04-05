@@ -22,11 +22,14 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.mockito.BDDMockito.*;
 
-import com.example.springpoll.entities.Alternative;
-import com.example.springpoll.entities.Poll;
-import com.example.springpoll.entities.Question;
+import arpa.home.springpoll.entities.Alternative;
+import arpa.home.springpoll.entities.Poll;
+import arpa.home.springpoll.entities.Question;
+import arpa.home.springpoll.poll.PollRepository;
+import arpa.home.springpoll.poll.PollService;
+
+import org.mockito.BDDMockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class PollServiceTest {

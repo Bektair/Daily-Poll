@@ -29,6 +29,7 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -39,11 +40,12 @@ import org.springframework.test.web.servlet.ResultMatcher;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
-import com.example.springpoll.businessRule.dateFormat;
-import com.example.springpoll.entities.Poll;
-import com.example.springpoll.poll.PollController;
-import com.example.springpoll.poll.PollService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import arpa.home.springpoll.businessRule.dateFormat;
+import arpa.home.springpoll.entities.Poll;
+import arpa.home.springpoll.poll.PollController;
+import arpa.home.springpoll.poll.PollService;
 
 @WebMvcTest(PollController.class) //limited to web layer and class
 class PollControllerTest {
@@ -121,11 +123,14 @@ class PollControllerTest {
 		
 		//arrenge
 		BigInteger pollId = BigInteger.ONE;
-		String postedDateParam = "1600-01-01";
+		String postedDateParam = "11/11/2000";
+		LocalDate postedDate = LocalDate.parse(postedDateParam, 
+				dateFormat.retrieveDateFormat());
 		
 		//act
-		MvcResult result = mockMvc.perform(put("/api/v1/poll/"+pollId.intValue()
-			+"?postedDate="+postedDateParam))
+		MvcResult result = mockMvc.perform(put("/api/v1/poll/"+pollId.intValue())
+				.param("postedDate", postedDateParam)
+				)
 				.andDo(print()) 
 				.andReturn();
 		
@@ -139,10 +144,14 @@ class PollControllerTest {
 		//assert
 		assertThat(result.getResponse().getStatus())
 			.isEqualTo(200);
+		
 		assertThat(pollIdArgumentCaptor.getValue())
 			.isEqualTo(pollId);
 		assertThat(postedDateArgumentCaptor.getValue())
-			.isEqualTo(postedDateParam);
+			.isEqualTo(postedDate);
+		
+		
+		
 	}
 	
 

@@ -8,9 +8,9 @@ import java.util.Set;
 
 import javax.swing.text.DateFormatter;
 
-import com.example.springpoll.entities.Alternative;
-import com.example.springpoll.entities.Poll;
-import com.example.springpoll.entities.Question;
+import arpa.home.springpoll.entities.Alternative;
+import arpa.home.springpoll.entities.Poll;
+import arpa.home.springpoll.entities.Question;
 
 public class PollTestUtils {
 	
