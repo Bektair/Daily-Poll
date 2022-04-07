@@ -9,11 +9,11 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import arpa.home.springpoll.data.AlternativeRepository;
-import arpa.home.springpoll.data.QuestionRepository;
-import arpa.home.springpoll.entities.Alternative;
-import arpa.home.springpoll.entities.Poll;
-import arpa.home.springpoll.entities.Question;
+import arpa.home.springpoll.data.orm.AlternativeORM;
+import arpa.home.springpoll.data.orm.PollORM;
+import arpa.home.springpoll.data.orm.QuestionORM;
+import arpa.home.springpoll.data.repositories.AlternativeRepository;
+import arpa.home.springpoll.data.repositories.QuestionRepository;
 
 @Service
 public class QuestService {
@@ -28,14 +28,14 @@ private AltService altService;
 		this.questRepository=questRepository;
 	}
 
-	public void addQuestions(Question... questions) {
-		for(Question q : questions) {
+	public void addQuestions(QuestionORM... questions) {
+		for(QuestionORM q : questions) {
 			altService.addAlternatives(q.getAlternatives());
 			addQuestion(q);
 		}
 	}
 	
-	private boolean isQuestionInDB(Question quest) {
+	private boolean isQuestionInDB(QuestionORM quest) {
 		if(quest.getQuestId()==null) return false;
 		if(questRepository.findById(quest.getQuestId())
 				.isPresent()) return true;
@@ -44,9 +44,9 @@ private AltService altService;
 				+ " or change it");
 	}
 	
-	public void addQuestionWithAlternatives(Collection<Question> questions) {
-		Collection<Question> questionsNotInDB = new HashSet<Question>();
-		for(Question q : questions) {
+	public void addQuestionWithAlternatives(Collection<QuestionORM> questions) {
+		Collection<QuestionORM> questionsNotInDB = new HashSet<QuestionORM>();
+		for(QuestionORM q : questions) {
 			System.out.println(q.getQuestTxt() + " -------------------------");
 			if(!isQuestionInDB(q)) {
 				System.out.println(q.getAlternatives());
@@ -58,7 +58,7 @@ private AltService altService;
 		  questRepository.saveAll(questionsNotInDB);
 	}
 	
-	public void addQuestion(Question question) {
+	public void addQuestion(QuestionORM question) {
 		questRepository.save(question);
 	}
 	
@@ -69,7 +69,7 @@ private AltService altService;
 
 	
 	
-  public List<Question> getQuestions(){
+  public List<QuestionORM> getQuestions(){
   	return questRepository.findAll();
 
   }

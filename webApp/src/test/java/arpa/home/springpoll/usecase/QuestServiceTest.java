@@ -1,4 +1,4 @@
-package com.example.springpoll.question;
+package arpa.home.springpoll.usecase;
 
 import static org.junit.jupiter.api.Assertions.*;
 

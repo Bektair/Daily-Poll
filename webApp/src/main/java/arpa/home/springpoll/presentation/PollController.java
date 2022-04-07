@@ -18,9 +18,11 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 
-import arpa.home.springpoll.entities.Poll;
-import arpa.home.springpoll.entities.Question;
+import arpa.home.springpoll.data.PollMapper;
+import arpa.home.springpoll.data.orm.PollORM;
+import arpa.home.springpoll.data.orm.QuestionORM;
 import arpa.home.springpoll.usecase.PollService;
+import arpa.home.springpoll.usecase.entities.Poll;
 
 import java.math.BigInteger;
 import java.time.LocalDate;
@@ -33,27 +35,28 @@ import java.util.Set;
 public class PollController {
 
 	private final PollService pollService;
-
+	private final PollMapper pollMapper;
+	
 	@Autowired
-	public PollController(PollService pollService) {
+	public PollController(PollService pollService, PollMapper pollMapper) {
 		this.pollService = pollService;
+		this.pollMapper = pollMapper;
 	}
 	
 	@GetMapping
 	public List<Poll> getPolls() {
+		
 		return pollService.getPolls();
 	}
 	
 	@PostMapping
-	public void registerNewPoll(@RequestBody Poll poll) {
-		
-
-		pollService.addNewPoll(poll);
+	public void registerNewPoll(@RequestBody PollORM poll) {
+		pollService.addNewPoll(pollMapper.mapPoll(poll));
 	}
 	
 	@DeleteMapping(path = "{pollId}")
 	public void deletePoll(@PathVariable("pollId") BigInteger pollId) {
-		pollService.deletePollById(pollId);
+		pollService.deletePollById(pollId.toString());
 	}
 	
 	
@@ -63,7 +66,7 @@ public class PollController {
 			@RequestParam 
 			LocalDate postedDate) {
 		System.out.println(postedDate);
-		pollService.updatePoll(pollId, postedDate);
+		pollService.updatePoll(pollId.toString(), postedDate.toString());
 		
 		System.out.println("debug error plz");
 		

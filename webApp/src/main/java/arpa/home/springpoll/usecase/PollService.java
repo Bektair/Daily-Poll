@@ -11,65 +11,75 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import arpa.home.springpoll.data.PollRepository;
-import arpa.home.springpoll.entities.Poll;
+import arpa.home.springpoll.data.PollGatewayImp;
+import arpa.home.springpoll.data.orm.PollORM;
+import arpa.home.springpoll.data.repositories.PollRepository;
+import arpa.home.springpoll.usecase.entities.Poll;
+import arpa.home.springpoll.usecase.gateways.PollGateway;
 
 //Service is business logic
 //@Service or @Component tells that this is a bean which can be injected
 @Service
 public class PollService {
 
-	private final PollRepository pollRepository;
+	
+	private final PollGateway pollGate;
 	
 	@Autowired
-	public PollService(PollRepository pollRepository) {
-		this.pollRepository=pollRepository;
+	public PollService(PollGateway pollGate) {
+		this.pollGate=pollGate;
 	}
 	
 	
   public List<Poll> getPolls(){
-  	return pollRepository.findAll();
+  	
+  	List<Poll> polls = pollGate.getAllPolls();
+  	
+  	return polls;
 
   }
   
   public Optional<Poll> getPollById(BigInteger pollId) {
-  	return pollRepository.findById(pollId);
+  	return null;
+  	//return pollRepository.findById(pollId);
   }
   
   public void addNewPoll(Poll poll) {
-  	Optional<Poll> PollsWithSamedatePostedDate = pollRepository
+  	Optional<Poll> PollsWithSamedatePostedDate = pollGate
   			.findPollByDatePosted(poll.getDatePosted());
   	Boolean isPresent = PollsWithSamedatePostedDate.isPresent(); 
   	if(isPresent) {
   		throw new IllegalArgumentException("Maximum one poll is sent a day: "
   				+ poll.getDatePosted());
   	}
-  	pollRepository.save(poll);
+  	
+  	pollGate.savePoll(poll);
   	
   }
 
   
-  public void deletePollById(BigInteger pollId) {
-  	boolean exists = pollRepository.existsById(pollId);
+  public void deletePollById(String pollId) {
+  	boolean exists = pollGate.existsById(pollId);
   	if(!exists) {
   		throw new IllegalArgumentException
   		("poll with id" + pollId + "does not exist");
   	}
-  	pollRepository.deleteById(pollId);
-  	
+  	pollGate.deletePollById(pollId);
+
   }
   
   //TODO add rollback
   @Transactional
-  public void updatePoll(BigInteger pollId, LocalDate datePosted) {
-  	Poll poll = pollRepository.getById(pollId);
-  	if(poll == null) {
-  		throw new IllegalStateException
-  		("poll with id" + pollId + "does not exist");
-  	}
-    //Set methods put entities into persistent state
-  	poll.setDatePosted(datePosted);
-  	
+  public void updatePoll(String pollId, String datePosted) {
+//  	
+//  	PollORM poll = pollRepository.getById(pollId);
+//  	if(poll == null) {
+//  		throw new IllegalStateException
+//  		("poll with id" + pollId + "does not exist");
+//  	}
+//    //Set methods put entities into persistent state
+//  	poll.setDatePosted(datePosted);
+//  	
   }
   
 }

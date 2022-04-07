@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import arpa.home.springpoll.entities.Question;
+import arpa.home.springpoll.data.orm.QuestionORM;
 import arpa.home.springpoll.usecase.QuestService;
 
 @RestController
@@ -22,7 +22,7 @@ public class QuestController {
 	}
 	
 	@GetMapping
-	public List<Question> getQuestions(){
+	public List<QuestionORM> getQuestions(){
 		return questService.getQuestions();
 	}
 	
