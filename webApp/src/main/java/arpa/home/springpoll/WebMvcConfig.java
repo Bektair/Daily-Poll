@@ -19,7 +19,7 @@ import org.springframework.format.datetime.standard.DateTimeFormatterRegistrar;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import arpa.home.springpoll.entities.Poll; 
+import arpa.home.springpoll.data.orm.PollORM; 
 
 
 @EnableWebMvc
@@ -36,6 +36,7 @@ public class WebMvcConfig implements WebMvcConfigurer{
   }
 	
 	public static DateTimeFormatter retrieveDateFormat() {
+		//If changed change ORMs LocalDate formatters also
 		return DateTimeFormatter.ofPattern("dd/MM/yyyy");
 	}
 	

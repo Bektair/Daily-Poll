@@ -1,4 +1,4 @@
-package com.example.springpoll.poll;
+package arpa.home.springpoll.usecase;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -23,11 +23,12 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import arpa.home.springpoll.data.PollRepository;
-import arpa.home.springpoll.entities.Alternative;
-import arpa.home.springpoll.entities.Poll;
-import arpa.home.springpoll.entities.Question;
+import arpa.home.springpoll.data.orm.AlternativeORM;
+import arpa.home.springpoll.data.orm.QuestionORM;
+import arpa.home.springpoll.test_utils.PollTestUtils;
 import arpa.home.springpoll.usecase.PollService;
+import arpa.home.springpoll.usecase.entities.Poll;
+import arpa.home.springpoll.usecase.gateways.PollGateway;
 
 import org.mockito.BDDMockito.*;
 
@@ -38,12 +39,11 @@ class PollServiceTest {
 	
 	
 	@Mock
-	private PollRepository pollRepo;
+	private PollGateway pollGate;
 	
 	@BeforeEach
 	void setUp() {
-	
-		underTest = new PollService(pollRepo);
+		underTest = new PollService(pollGate);
 	}
 	
 	@AfterEach
@@ -58,7 +58,7 @@ class PollServiceTest {
 		//When
 		underTest.getPolls();
 		//Then(verifies that a method was invoked)
-		verify(pollRepo).findAll();
+		verify(pollGate).getAllPolls();
 	}
 	
 	
@@ -73,8 +73,8 @@ class PollServiceTest {
 		//then 
 		ArgumentCaptor<Poll> pollArgumentCaptor = 
 				ArgumentCaptor.forClass(Poll.class);
-		verify(pollRepo) //captures the value that is sent to the repo
-			.save(pollArgumentCaptor.capture());
+		verify(pollGate) //captures the value that is sent to the repo
+			.savePoll(pollArgumentCaptor.capture());
 	
 		Poll capturedPoll = pollArgumentCaptor.getValue();
 		
@@ -85,17 +85,17 @@ class PollServiceTest {
 	@Test
 	void canDeleteExistingPollById() {
 		//given
-		BigInteger id = BigInteger.ONE;
-		when(pollRepo.existsById(id)).thenReturn(true);	
+		String id = "1";
+		when(pollGate.existsById(id)).thenReturn(true);	
 		
 		//when
 		underTest.deletePollById(id);
 
-		ArgumentCaptor<BigInteger> pollIdArgumentCaptor = 
-				ArgumentCaptor.forClass(BigInteger.class);
-		verify(pollRepo) //captures the value that is sent to the repo
-			.deleteById(pollIdArgumentCaptor.capture());
-		BigInteger capturedId = pollIdArgumentCaptor.getValue();
+		ArgumentCaptor<String> pollIdArgumentCaptor = 
+				ArgumentCaptor.forClass(String.class);
+		verify(pollGate) //captures the value that is sent to the repo
+			.deletePollById(pollIdArgumentCaptor.capture());
+		String capturedId = pollIdArgumentCaptor.getValue();
 		//then
 		assertThat(id).isEqualTo(capturedId);
 	
@@ -104,8 +104,8 @@ class PollServiceTest {
 	@Test
 	void throwsWhenDeleteByNonExistentId() {
 		//given
-		BigInteger id = BigInteger.ONE;
-		when(pollRepo.existsById(id)).thenReturn(false);	
+		String id = "1";
+		when(pollGate.existsById(id)).thenReturn(false);	
 		//
 		assertThatThrownBy(() -> underTest.deletePollById(id))
 			.isInstanceOf(IllegalArgumentException.class)
@@ -120,7 +120,7 @@ class PollServiceTest {
 	void willThrowWhenPollDateIsTaken() {
 		//given
 		Poll poll = PollTestUtils.createPollWithId();
-		when(pollRepo.findPollByDatePosted(poll.getDatePosted()))
+		when(pollGate.findPollByDatePosted(poll.getDatePosted()))
 			.thenReturn(Optional.of(poll));		
 		//when
 		//then
@@ -128,7 +128,7 @@ class PollServiceTest {
 				.isInstanceOf(IllegalArgumentException.class)
 				.hasMessageContaining("Maximum one poll is sent a day: "
 	  				+ poll.getDatePosted());	
-		verify(pollRepo, never()).save(any());
+		verify(pollGate, never()).savePoll(any());
 	}
 	
 	@Test

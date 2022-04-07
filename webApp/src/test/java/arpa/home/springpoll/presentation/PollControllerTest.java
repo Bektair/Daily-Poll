@@ -1,4 +1,4 @@
-package com.example.springpoll.poll;
+package arpa.home.springpoll.presentation;
 
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.apache.http.entity.ContentType;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -43,9 +44,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import arpa.home.springpoll.WebMvcConfig;
-import arpa.home.springpoll.entities.Poll;
+import arpa.home.springpoll.data.PollMapper;
+import arpa.home.springpoll.data.orm.PollORM;
 import arpa.home.springpoll.presentation.PollController;
+import arpa.home.springpoll.test_utils.PollORMTestUtils;
+import arpa.home.springpoll.test_utils.PollTestUtils;
 import arpa.home.springpoll.usecase.PollService;
+import arpa.home.springpoll.usecase.entities.Poll;
+import arpa.home.springpoll.usecase.gateways.PollGateway;
 
 @WebMvcTest(PollController.class) //limited to web layer and class
 class PollControllerTest {
@@ -60,14 +66,21 @@ class PollControllerTest {
 	@Autowired
 	private ObjectMapper objectMapper;
 	
+	@MockBean
+	private PollMapper pollMapper;
+	
 
 
+
+	@BeforeEach
+	void start() {
+	}
 	
 	@Test 
 	public void getShouldReturnPollAsJsonContent() throws Exception {
 		//arrange
 		Poll poll = PollTestUtils.createPollWithId();
-		LocalDate datePosted = poll.getDatePosted();
+		String datePosted = poll.getDatePosted();
 		when(pollService.getPolls()).thenReturn(List.of(poll));
 		
 		//act
@@ -78,17 +91,16 @@ class PollControllerTest {
 		  .andExpect(content().contentType(
 		  		MediaType.APPLICATION_JSON))
 		  .andExpect(jsonPath("$[*].datePosted")
-		  		.value(datePosted
-		  				.format(WebMvcConfig.retrieveDateFormat())))
-			.andExpect(jsonPath("$[*].pollId")
-				.value(poll.getPollId().intValue()));
+		  		.value(datePosted))
+			.andExpect(jsonPath("$[*].id")
+				.value(poll.getId()));
 	}
 	
 	
 	@Test
 	public void shouldBeAbleToPostPollInRequestBody() throws Exception {
 		//arrange
-		Poll poll = PollTestUtils.createPollNoId();
+		PollORM poll = PollORMTestUtils.createPollNoId();
 		String content = objectMapper.writeValueAsString(poll);
 		
 		//act
@@ -102,25 +114,24 @@ class PollControllerTest {
 	@Test
 	public void shouldReceiveAndDelegateDeletePollRequest() throws Exception {
 		//arrange
-		BigInteger pollId = BigInteger.ONE;
+		String pollId = "1";
 
 		//act
-		mockMvc.perform(delete("/api/v1/poll/"+pollId.intValue()))
+		mockMvc.perform(delete("/api/v1/poll/"+pollId))
 		.andDo(print()); 
 			
-		ArgumentCaptor<BigInteger> pollIdArgumentCaptor=
-				ArgumentCaptor.forClass(BigInteger.class);
+		ArgumentCaptor<String> pollIdArgumentCaptor=
+				ArgumentCaptor.forClass(String.class);
 		verify(pollService)
 			.deletePollById(pollIdArgumentCaptor.capture());
 		
 		//assert
 		assertThat(pollIdArgumentCaptor.getValue())
-				.isEqualByComparingTo(pollId);
+				.isEqualTo(pollId);
 	}
 	
 	@Test
 	public void putPollRequest() throws Exception {
-		
 		//arrenge
 		BigInteger pollId = BigInteger.ONE;
 		String postedDateParam = "11/11/2000";
@@ -134,10 +145,10 @@ class PollControllerTest {
 				.andDo(print()) 
 				.andReturn();
 		
-		ArgumentCaptor<BigInteger> pollIdArgumentCaptor=
-				ArgumentCaptor.forClass(BigInteger.class);
-		ArgumentCaptor<LocalDate> postedDateArgumentCaptor=
-				ArgumentCaptor.forClass(LocalDate.class);
+		ArgumentCaptor<String> pollIdArgumentCaptor=
+				ArgumentCaptor.forClass(String.class);
+		ArgumentCaptor<String> postedDateArgumentCaptor=
+				ArgumentCaptor.forClass(String.class);
 		verify(pollService)
 			.updatePoll(pollIdArgumentCaptor.capture()
 				, postedDateArgumentCaptor.capture());
@@ -146,9 +157,9 @@ class PollControllerTest {
 			.isEqualTo(200);
 		
 		assertThat(pollIdArgumentCaptor.getValue())
-			.isEqualTo(pollId);
+			.isEqualTo(pollId.toString());
 		assertThat(postedDateArgumentCaptor.getValue())
-			.isEqualTo(postedDate);
+			.isEqualTo(LocalDate.parse(postedDateParam, WebMvcConfig.retrieveDateFormat()).toString());
 		
 		
 		

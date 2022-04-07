@@ -1,4 +1,4 @@
-package arpa.home.springpoll.entities;
+package arpa.home.springpoll.data.orm;
 
 import java.io.Serializable;
 import java.math.BigInteger;
@@ -30,7 +30,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 @AllArgsConstructor
 @Entity
 @Table(name = "Question")
-public class Question implements Serializable {
+public class QuestionORM implements Serializable {
 	@Column
 	private String questTxt;
 	@Id
@@ -43,10 +43,10 @@ public class Question implements Serializable {
 	private BigInteger questId;
 
 	@ManyToMany(fetch = FetchType.LAZY,
-			targetEntity= Poll.class,
+			targetEntity= PollORM.class,
       mappedBy="questions")
 	@JsonIgnoreProperties("questions")
-	private Set<Poll> polls = new HashSet<>();
+	private Set<PollORM> polls = new HashSet<>();
 	
 
 	@OneToMany(cascade = {
@@ -61,19 +61,19 @@ public class Question implements Serializable {
 			joinColumns= {@JoinColumn(name="questId")},
 			inverseJoinColumns= {@JoinColumn(name="altId")}
 	)
-	private Set<Alternative> alternatives = new LinkedHashSet<>();
+	private Set<AlternativeORM> alternatives = new LinkedHashSet<>();
 
-	public Question(String questionTxt, Alternative...alternatives) {
+	public QuestionORM(String questionTxt, AlternativeORM...alternatives) {
 		this.questTxt= questionTxt;
-		for(Alternative a : alternatives) {
+		for(AlternativeORM a : alternatives) {
 			
 			this.alternatives.add(a);
 		}
 	}
 	
-	public Question(String questionTxt, Set<Alternative> alternatives) {
+	public QuestionORM(String questionTxt, Set<AlternativeORM> alternatives) {
 		this.questTxt= questionTxt;
-		for(Alternative a : alternatives) {
+		for(AlternativeORM a : alternatives) {
 			
 			this.alternatives.add(a);
 		}
@@ -82,11 +82,11 @@ public class Question implements Serializable {
 	
 	
 	
-	public void addPoll(Poll poll) {
+	public void addPoll(PollORM poll) {
 		polls.add(poll);
 	}
 	
-	public void removePoll(Poll poll) {
+	public void removePoll(PollORM poll) {
 		polls.remove(poll);
 	}
 	
@@ -95,7 +95,7 @@ public class Question implements Serializable {
 	public boolean equals(Object x) {
 		if(x == null) return false;
 		if(this.getClass() != x.getClass()) return false;
-		Question that = ((Question)x);
+		QuestionORM that = ((QuestionORM)x);
 		if(this.getQuestId()!=null)
 			return (this.getQuestId().compareTo(that.getQuestId()))==0;
 		else 
@@ -110,7 +110,7 @@ public class Question implements Serializable {
 	@Override
 	public String toString() {
 		String questString = questTxt;
-		for(Alternative a : alternatives) {
+		for(AlternativeORM a : alternatives) {
 			questString+="\n";
 			questString+=a.getAltTxt();
 		}
@@ -125,8 +125,8 @@ public class Question implements Serializable {
 		this.questTxt = questTxt;
 	}
 
-	public Set<Alternative> getAlternatives() {
-		return new LinkedHashSet<Alternative>(alternatives);
+	public Set<AlternativeORM> getAlternatives() {
+		return new LinkedHashSet<AlternativeORM>(alternatives);
 	}
 
 	public BigInteger getQuestId() {

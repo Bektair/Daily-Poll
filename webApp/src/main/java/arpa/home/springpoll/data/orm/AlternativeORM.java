@@ -1,4 +1,4 @@
-package arpa.home.springpoll.entities;
+package arpa.home.springpoll.data.orm;
 
 import java.math.BigInteger;
 import java.time.LocalDate;
@@ -14,7 +14,6 @@ import javax.persistence.Table;
 
 import org.springframework.lang.Nullable;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -25,7 +24,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Table(name = "Alternative")
-public class Alternative {
+public class AlternativeORM {
 	String altTxt;
 	Integer altOrder;
 	
@@ -43,9 +42,10 @@ public class Alternative {
   )
 	BigInteger altId;
 	
-	public Alternative(Integer altOrder, String altTxt) {
+	public AlternativeORM(Integer altOrder, String altTxt, String emojiId) {
 		this.altOrder=altOrder;
 		this.altTxt = altTxt;
+		this.emojiId = emojiId;
 	}
 	
 	//Collection of users that have voted
@@ -56,7 +56,7 @@ public class Alternative {
 	public boolean equals(Object x) {
 		if(x == null) return false;
 		if(this.getClass() != x.getClass()) return false;
-		Alternative that = ((Alternative)x);
+		AlternativeORM that = ((AlternativeORM)x);
 		if(this.getAltId()!=null)
 			return (this.altId.compareTo(that.getAltId()))==0;
 		else

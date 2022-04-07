@@ -1,4 +1,4 @@
-package arpa.home.springpoll.entities;
+package arpa.home.springpoll.data.orm;
 
 import java.io.Serializable;
 import java.math.BigInteger;
@@ -44,7 +44,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Table(name = "Poll")
-public class Poll implements Serializable {
+public class PollORM implements Serializable {
 	@Id
 	@GeneratedValue(generator="pollSequenceGenerator")
 	@SequenceGenerator(
@@ -74,28 +74,33 @@ public class Poll implements Serializable {
 		)
 	@OrderBy("questId ASC")
 	@JsonIgnoreProperties("polls")
-	private Set<Question> questions = new LinkedHashSet<>(); 
+	private Set<QuestionORM> questions = new LinkedHashSet<>(); 
 
+	
+	private String discordId;  
+	
+	
+	
 	@Transient //Not it's own column in db table
 	private Integer monthsSincePosted;
 	
-	public Poll(LocalDate datePosted, Set<Question> questions) {
+	public PollORM(LocalDate datePosted, Set<QuestionORM> questions) {
 		this.datePosted=datePosted;
-		for(Question q : questions) {
+		for(QuestionORM q : questions) {
 			addQuestion(q);
 		}
 	}
-	public Poll(BigInteger id, LocalDate datePosted, Set<Question> questions) {
+	public PollORM(BigInteger id, LocalDate datePosted, Set<QuestionORM> questions) {
 		this.pollId = id;
 		this.datePosted=datePosted;
-		for(Question q : questions) {
+		for(QuestionORM q : questions) {
 			addQuestion(q);
 		}
 	}
 	
-	public Poll(LocalDate datePosted, Question... questions) {
+	public PollORM(LocalDate datePosted, QuestionORM... questions) {
 		this.datePosted=datePosted;
-		for(Question q : questions) {
+		for(QuestionORM q : questions) {
 			addQuestion(q);
 		}
 	}
@@ -107,13 +112,13 @@ public class Poll implements Serializable {
 	}
 	
 	//Maintains manyToMany relation
-	public void addQuestion(Question quest) {
+	public void addQuestion(QuestionORM quest) {
 		if(questions.contains(quest)) return;
 		questions.add(quest);
 		quest.addPoll(this);
 	}
 	
-	public void removeQuestion(Question quest) {
+	public void removeQuestion(QuestionORM quest) {
 		if(!questions.contains(quest)) return;
 		questions.remove(quest);
 		quest.removePoll(this);
@@ -123,7 +128,7 @@ public class Poll implements Serializable {
 	public boolean equals(Object x) {
 		if(x == null) return false;
 		if(this.getClass() != x.getClass()) return false;
-		Poll that = ((Poll)x);		
+		PollORM that = ((PollORM)x);		
 		if(this.getPollId()!=null)
 			return this.getPollId().equals(that.getPollId());
 		else
@@ -145,16 +150,17 @@ public class Poll implements Serializable {
 	}
 
 	
-	public Set<Question> getQuestions() {
-		return new LinkedHashSet<Question>(questions);
+	public Set<QuestionORM> getQuestions() {
+		return new LinkedHashSet<QuestionORM>(questions);
 	}
 
 	public BigInteger getPollId() {
 		return pollId;
 	}
 	
-
+	public String getDiscordId() {
+		return discordId;
+	}
 	
-
 
 }

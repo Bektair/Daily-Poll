@@ -1,4 +1,4 @@
-package com.example.springpoll.poll;
+package arpa.home.springpoll.presentation;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;

@@ -1,4 +1,4 @@
-package com.example.springpoll.poll;
+package arpa.home.springpoll.data.repositories;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -10,10 +10,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-import arpa.home.springpoll.data.PollRepository;
-import arpa.home.springpoll.entities.Alternative;
-import arpa.home.springpoll.entities.Poll;
-import arpa.home.springpoll.entities.Question;
+import arpa.home.springpoll.data.orm.AlternativeORM;
+import arpa.home.springpoll.data.orm.PollORM;
+import arpa.home.springpoll.data.orm.QuestionORM;
+import arpa.home.springpoll.data.repositories.PollRepository;
 
 @DataJpaTest
 public class PollRepositoryTest {
@@ -30,13 +30,13 @@ public class PollRepositoryTest {
 	void itShouldCheckThatWeFindPollWithDatePosted() {
 		//given
 		LocalDate pollPosted = LocalDate.of(2022, 5, 5);
-		Alternative alt = new Alternative(1, "I do");
-		Alternative alt2 = new Alternative(2, "I don't"); 
-		Question quest = new Question("Do you love me?", alt, alt2);
-		Poll poll = new Poll(pollPosted, quest);
+		AlternativeORM alt = new AlternativeORM(1, "I do", ":smart:");
+		AlternativeORM alt2 = new AlternativeORM(2, "I don't", ":jay:"); 
+		QuestionORM quest = new QuestionORM("Do you love me?", alt, alt2);
+		PollORM poll = new PollORM(pollPosted, quest);
 		underTest.save(poll);
 		//when
-		Optional<Poll> pollResults = underTest
+		Optional<PollORM> pollResults = underTest
 				.findPollByDatePosted(pollPosted);
 		//then
 		assertThat(poll.equals(pollResults.get()));
@@ -49,7 +49,7 @@ public class PollRepositoryTest {
 		//given
 		LocalDate pollPosted = LocalDate.of(2022, 5, 5);
 		//when
-		Optional<Poll> pollResults = underTest
+		Optional<PollORM> pollResults = underTest
 				.findPollByDatePosted(pollPosted);
 		//then
 		assertThat(pollResults).isEmpty();

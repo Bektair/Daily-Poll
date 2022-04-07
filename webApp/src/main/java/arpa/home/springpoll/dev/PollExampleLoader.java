@@ -17,12 +17,12 @@ import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.stereotype.Component;
 
-import arpa.home.springpoll.data.AlternativeRepository;
-import arpa.home.springpoll.data.PollRepository;
-import arpa.home.springpoll.data.QuestionRepository;
-import arpa.home.springpoll.entities.Alternative;
-import arpa.home.springpoll.entities.Poll;
-import arpa.home.springpoll.entities.Question;
+import arpa.home.springpoll.data.orm.AlternativeORM;
+import arpa.home.springpoll.data.orm.PollORM;
+import arpa.home.springpoll.data.orm.QuestionORM;
+import arpa.home.springpoll.data.repositories.AlternativeRepository;
+import arpa.home.springpoll.data.repositories.PollRepository;
+import arpa.home.springpoll.data.repositories.QuestionRepository;
 import arpa.home.springpoll.usecase.AltService;
 import arpa.home.springpoll.usecase.QuestService;
 
@@ -50,15 +50,16 @@ public class PollExampleLoader implements CommandLineRunner {
 		questionRepository.deleteAll();
 		altRepository.deleteAll();
 
-		Alternative alt = new Alternative(1, "NO, me smart");
-		Alternative alt2 = new Alternative(2, "Yes, me smart");
-		Alternative alt3 = new Alternative(3, "Sometimes");
+		AlternativeORM alt = new AlternativeORM(1, "NO, me smart", ":smart:");
+		AlternativeORM alt2 = new AlternativeORM(2, "Yes, me smart", ":lul:");
+		AlternativeORM alt3 = new AlternativeORM(1, "Sometimes", ":unsure:");
+		AlternativeORM alt4 = new AlternativeORM(1, "Never", ":jay:");
 
-		Question quest1 = new Question("Are you Dumb?", alt, alt2, alt3);
-		Question quest2 = new Question("Are you Smart?");
-		Question quest3 = new Question("Do you own a cat?");
+		QuestionORM quest1 = new QuestionORM("Are you Dumb?", alt, alt2);
+		QuestionORM quest2 = new QuestionORM("Are you Smart?", alt3);
+		QuestionORM quest3 = new QuestionORM("Do you own a cat?", alt4);
 
-		Poll mockPoll1 = new Poll(LocalDate.parse("1995-04-04"), quest1, 
+		PollORM mockPoll1 = new PollORM(LocalDate.parse("1995-04-04"), quest1, 
 				quest2, quest3);
 		
 		pollRepository.save(mockPoll1);
