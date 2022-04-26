@@ -10,7 +10,9 @@ public class Question {
 	private Collection<Alternative> alternatives;
 	private String id;
 	
-	
+	public Question() {
+		super();
+	}
 
 	public Question(String questTxt, 
 			Collection<Alternative> alternatives, String id) {

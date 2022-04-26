@@ -1,0 +1,16 @@
+@startuml
+left to right direction
+actor Moderator as mod
+actor Client as client
+client --> (Log in Discord)
+client --> (sugguestPoll)
+client --> (votePolls)
+client --> (read resource-library)
+mod --> (addpolls)
+(addpolls) --> (Send poll)
+(read sugguestions) ..> (addpolls):<<include>>
+mod --> (createResource)
+(read resource-library) --> (readResource)
+mod --> (editResource)
+(selectPoll) ..> (votePolls):<<include>>
+@enduml

@@ -6,16 +6,24 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Poll implements Serializable{
 
 	private String datePosted;
 	private User poster;
 	private Collection<Question> questions;
-	private String id;
+	private String id="-1";
 	
+	public Poll() {
+		super();
+	}
 
-	public Poll (String datePosted, User poster, 
-			Collection<Question> questions, String id) {
+	public Poll (String datePosted, 
+			User poster, 
+			Collection<Question> questions, 
+			String id) {
+		super();
 		this.datePosted=datePosted;
 		this.poster = poster;
 		this.questions = questions;
@@ -40,6 +48,10 @@ public class Poll implements Serializable{
 
 	public User getPoster() {
 		return poster;
+	}
+	
+	public String getDiscordId() {
+		return poster.getdiscordId();
 	}
 
 

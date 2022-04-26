@@ -1,0 +1,19 @@
+Preconditions: Logged in as discord user, loaded resource-library page
+
+Main scenario:
+Client sees the library page for choosing of materials
+such as gameplay tutorials, hardware setup, game theory, replay analysis.
+The featured resources based on moderator preference and recency are shown.
+The client clicks one of the featured resources and gets directed to a page
+with only information about this resource and can read it.
+
+(Spawning tool seems to make infinite amount of pages with same template)
+@startuml
+actor Client as client
+participant library as lib
+participant resourcePage as res
+
+client -> lib: getResource(res_id)
+lib -> 
+
+@enduml

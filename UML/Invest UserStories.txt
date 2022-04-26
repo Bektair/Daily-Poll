@@ -1,0 +1,38 @@
+INVEST is the acronym used to create these user stories as per Jeff Sutherland.
+Independent
+Negotiable
+Valuable
+Estimable
+Small
+Testable
+
+Create Read Update Delete acronym CRUD is also relevant in this regard.
+
+
+Independent:
+Split up into CRUD stories.
+Can combine stories if they are dependent on eachother,
+Or split them across a different dimension
+
+Negotiable:
+Stories are not contracts
+Do not need to include all details, as it gives falls impressions of precision
+Need flexibility so it can be adjusted how much of it is implemented
+
+Valueable
+Must be explained how it is valuable to a type of user(persona) or purchasers.
+
+Estimable:
+You should be able to estimate how long it takes to implement
+
+Small:
+Large stories are hard to estimate and plan as they don't fit into single sprints.
+Usually compound stories that contain other smaller stories. 
+This can be done by dividing between for example CRUD boundaries or data boundaries.   
+
+Testable:
+Must be able to demonstrate that story meets the product owners expectation.
+Should be 90+% automated(even with using the humble pattern some manual testing of UI is often required). 
+
+Example template:
+“As a <role>, I want to <action> so that <benefit>.”

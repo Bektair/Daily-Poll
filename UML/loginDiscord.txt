@@ -1,0 +1,41 @@
+Precondition: not logged in with discord account allready
+Main scenario:
+The user writes the address of the login page and gets redirected towards
+the discord-login. They then type in their discord credentials, when accepted
+the login servlet contacts the database to update your userinfo.
+Then a token is stored in your session letting you go through the webfilter
+and to the mainPage.
+
+Alternative:
+The user writes any address within the homepages domain, before it arrives
+the webfilter reads the request and discovers you are not logged in. It will
+redirect you to the login page. 
+
+Note to self:
+Should make sure load page redirects if allready logged in.
+
+@startuml
+actor Client as client
+participant loginServlet as login
+participant Discord as disc
+database postgres as pg
+participant mainPage as main
+participant otherPage as dom
+participant webfilter as filter
+client -> login: load page
+login -> disc: redirect page
+
+loop [[oAuthAccepted=true||atempts>5]] 
+  client -> disc: authentication
+  opt atempts>5
+    disc -> client: 5minutes timeout
+  end
+  opt oAutchAccepted=false
+    disc -> client: Wrong user/password combo
+  end
+end
+disc -> login: oAuthAccepted
+login -> pg: update userInfo
+login -> filter:redirect mainPage
+filter -> main:load page
+@enduml

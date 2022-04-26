@@ -9,7 +9,9 @@ public class Alternative implements Serializable {
 	private String emoji;
 	private String id;
 	
-
+	public Alternative() {
+		super();
+	}
 
 	public Alternative(String alternativeTxt, 
 			int alternativeOrder, String emoji, String id) {

@@ -1,0 +1,45 @@
+Precondition: you have logged into discord account, and loaded the page
+Actors: User, Admin/Mod
+Main Scenario:
+You click one of the latest polls in VotePage and choose an alternative, voting on it.
+Optional:
+You can search for polls by keywords, from-->to dates
+A return list of polls is given on a new searchpage with the result of the search.
+(log previous searches?)
+Required:
+The client clicks on one of the newest polls listed in VotePage. 
+It then expands the poll to reveal votes. The client then votes
+by clicking on an emoji nex to one of its options.
+
+1st Alternative:
+The client wishes to pick a random poll instead.
+Client clicks the randomPoll button, a poll pops up. The client then votes
+by clicking on an emoji nex to one of its options.
+
+
+@startuml
+autoactivate on
+actor Client as client #blue
+participant votePage as webui
+participant JavaBean as bean
+database postgres as pg
+
+
+group selectPoll
+  alt click Poll
+    opt searchPoll
+      webui ->> bean:Search(date-range/keyword)
+      bean -->> webui: update filteredList
+    end
+    webui ->> bean: openPoll(id)
+    bean -->> webui: expand UI
+  else random Poll
+    webui ->> bean: randomPoll()
+    bean -->> webui: popup UI
+  end
+end
+group votePoll
+webui ->> bean: votePoll()
+bean ->> pg--: register vote
+end
+@enduml

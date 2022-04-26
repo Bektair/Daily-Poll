@@ -44,12 +44,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import arpa.home.springpoll.WebMvcConfig;
-import arpa.home.springpoll.data.PollMapper;
-import arpa.home.springpoll.data.orm.PollORM;
-import arpa.home.springpoll.presentation.PollController;
+import arpa.home.springpoll.persistence.PollMapper;
+import arpa.home.springpoll.persistence.orm.PollORM;
+import arpa.home.springpoll.presentation.controller.PollController;
 import arpa.home.springpoll.test_utils.PollORMTestUtils;
 import arpa.home.springpoll.test_utils.PollTestUtils;
-import arpa.home.springpoll.usecase.PollService;
+import arpa.home.springpoll.usecase.PollServiceImp;
 import arpa.home.springpoll.usecase.entities.Poll;
 import arpa.home.springpoll.usecase.gateways.PollGateway;
 
@@ -61,7 +61,7 @@ class PollControllerTest {
 	private MockMvc mockMvc;
 
 	@MockBean
-	private PollService pollService;
+	private PollServiceImp pollService;
 	
 	@Autowired
 	private ObjectMapper objectMapper;
@@ -69,9 +69,6 @@ class PollControllerTest {
 	@MockBean
 	private PollMapper pollMapper;
 	
-
-
-
 	@BeforeEach
 	void start() {
 	}
@@ -82,7 +79,6 @@ class PollControllerTest {
 		Poll poll = PollTestUtils.createPollWithId();
 		String datePosted = poll.getDatePosted();
 		when(pollService.getPolls()).thenReturn(List.of(poll));
-		
 		//act
 		this.mockMvc.perform(get("/api/v1/poll")) 
 			.andDo(print()) 
@@ -100,9 +96,10 @@ class PollControllerTest {
 	@Test
 	public void shouldBeAbleToPostPollInRequestBody() throws Exception {
 		//arrange
-		PollORM poll = PollORMTestUtils.createPollNoId();
+		Poll poll = PollTestUtils.createPollNoId();
 		String content = objectMapper.writeValueAsString(poll);
 		
+
 		//act
 		this.mockMvc.perform(post("/api/v1/poll")
 				.contentType("application/json")
@@ -134,9 +131,8 @@ class PollControllerTest {
 	public void putPollRequest() throws Exception {
 		//arrenge
 		BigInteger pollId = BigInteger.ONE;
-		String postedDateParam = "11/11/2000";
-		LocalDate postedDate = LocalDate.parse(postedDateParam, 
-				WebMvcConfig.retrieveDateFormat());
+		String postedDateParam = PollTestUtils.makeDateString();
+
 		
 		//act
 		MvcResult result = mockMvc.perform(put("/api/v1/poll/"+pollId.intValue())
