@@ -5,9 +5,9 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import arpa.home.springpoll.data.orm.AlternativeORM;
-import arpa.home.springpoll.data.repositories.AlternativeRepository;
-import arpa.home.springpoll.data.repositories.QuestionRepository;
+import arpa.home.springpoll.persistence.orm.AlternativeORM;
+import arpa.home.springpoll.persistence.repositories.AlternativeRepository;
+import arpa.home.springpoll.persistence.repositories.QuestionRepository;
 
 @Service
 public class AltService {

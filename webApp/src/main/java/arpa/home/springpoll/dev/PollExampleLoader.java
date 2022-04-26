@@ -17,12 +17,12 @@ import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.stereotype.Component;
 
-import arpa.home.springpoll.data.orm.AlternativeORM;
-import arpa.home.springpoll.data.orm.PollORM;
-import arpa.home.springpoll.data.orm.QuestionORM;
-import arpa.home.springpoll.data.repositories.AlternativeRepository;
-import arpa.home.springpoll.data.repositories.PollRepository;
-import arpa.home.springpoll.data.repositories.QuestionRepository;
+import arpa.home.springpoll.persistence.orm.AlternativeORM;
+import arpa.home.springpoll.persistence.orm.PollORM;
+import arpa.home.springpoll.persistence.orm.QuestionORM;
+import arpa.home.springpoll.persistence.repositories.AlternativeRepository;
+import arpa.home.springpoll.persistence.repositories.PollRepository;
+import arpa.home.springpoll.persistence.repositories.QuestionRepository;
 import arpa.home.springpoll.usecase.AltService;
 import arpa.home.springpoll.usecase.QuestService;
 

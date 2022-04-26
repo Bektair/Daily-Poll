@@ -1,0 +1,42 @@
+@startuml
+autoactivate on
+actor Client as client #blue
+participant xhtml as webui
+participant JavaBean as bean
+database postgres as pg
+participant webFilter as filter
+
+group readPolls
+client -> filter: request page
+activate filter
+break [[NotLoggedIn]]
+  ]<-- filter: redirect, discord login 
+end
+filter -> webui **: load page
+deactivate filter
+activate webui
+webui -> bean **: load bean
+activate bean
+bean -> pg:requestAllPolls
+pg --> bean: resultSet
+bean -> bean: storeResult
+bean --> webui: update lists
+end
+== page loaded ==
+group votePoll
+alt choose Poll
+webui ->> bean: openPoll(id)
+bean -->> webui: expand UI
+else random Poll
+webui ->> bean: randomPoll()
+bean -->> webui: popup UI
+end
+webui ->> bean: votePoll()
+bean ->> pg--: register vote
+end
+group searchPoll
+webui ->> bean:Search(date)
+bean -->> webui: update filteredList
+end
+
+@enduml

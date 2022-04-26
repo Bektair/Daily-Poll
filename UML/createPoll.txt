@@ -1,0 +1,15 @@
+@startuml
+autoactivate on
+actor Client as client #blue
+participant createPage as webui
+participant JavaBean as bean
+participant domain as domain
+participant doa as doa
+database postgres as pg
+
+webui ->> bean:SendForm(Poll)
+bean ->> domain:Poll
+domain ->> doa
+doa ->> pg:RegisterPoll
+domain ->> webui:updateUI
+@enduml
